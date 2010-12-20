@@ -1,4 +1,8 @@
+
+
+// start creating our builder object
 Builder := Object clone
+
 Builder depth := 0
 
 Builder forward := method(
@@ -9,7 +13,7 @@ Builder forward := method(
   )
   
   // open the tag
-  writeln(padding, "<", call message name, ">")
+  writeln(padding, tag(call message))
   
   depth = depth + 1 // increase indentation
 
@@ -25,6 +29,17 @@ Builder forward := method(
   depth = depth - 1 // pull the indentation back in
 )
 
+Builder tag := method(m,
+  tag_string := "<" .. m name
+  first_arg_content := self doMessage(m arguments at(0))
+  if(first_arg_content type == Map type,
+    first_arg_content keys foreach(key,
+      tag_string := tag_string .. " " .. key .. "=\"" .. first_arg_content at(key) .. "\""
+    )
+  )
+  tag_string := tag_string .. ">"
+)
+
 
 // lets try out this awesome syntax
 Builder html(
@@ -33,7 +48,10 @@ Builder html(
   ),
   body(
     h1("Prototype languages"),
-    p("We all love prototype languages, here are 3"),
+    script(Map clone atPut("lah", "ninja")),
+    p(Map clone atPut("class", "rad_p_class"),
+      "We all love prototype languages, here are 3"
+    ),
     ul(
       li("Io"),
       li("Lua"),
