@@ -13,15 +13,27 @@ Builder forward := method(
   )
   
   // open the tag
-  writeln(padding, tag(call message))
+  // writeln(padding, tag(call message))
   
   depth = depth + 1 // increase indentation
 
   // keep going down the tree
+  attributes := ""
+  inner_xml := list()
   call message arguments foreach(
     arg,
     content := self doMessage(arg)
-    if(content type == "Sequence", writeln(padding .. "  ", content))
+    if(content type == "Sequence", inner_xml append(content))
+    if(content type == "Map",
+      content keys foreach(key,
+        attributes := " #{key}=\"#{content at(key)}" interpolate
+      )
+    )
+  )
+
+  writeln(padding, "<", call message name, attributes, ">")
+  inner_xml foreach(inner_element,
+    writeln(padding .. "  " .. inner_element)
   )
   
   // close the tag
@@ -29,16 +41,6 @@ Builder forward := method(
   depth = depth - 1 // pull the indentation back in
 )
 
-Builder tag := method(m,
-  tag_string := "<" .. m name
-  first_arg_content := self doMessage(m arguments at(0))
-  if(first_arg_content type == Map type,
-    first_arg_content keys foreach(key,
-      tag_string := tag_string .. " " .. key .. "=\"" .. first_arg_content at(key) .. "\""
-    )
-  )
-  tag_string := tag_string .. ">"
-)
 
 
 // lets try out this awesome syntax
