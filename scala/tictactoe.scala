@@ -1,23 +1,27 @@
 class Board(val top_row: Array[String], val middle_row: Array[String], val bottom_row: Array[String]) {
-  def winner(): String {
-    if(winsRows("X") || winsColumns("X") || winsDiags("X")) {
+  def winner(): String  = {
+    if(winsRows("X") || winsCols("X") || winsDiags("X")) {
       "X"
-    } else if(winsRows("Y") || winsColumns("Y") || winsDiags("Y")) {
+    } else if(winsRows("Y") || winsCols("Y") || winsDiags("Y")) {
       "Y"
     } else {
       ""
     }
   }
 
-  def winsRows(letter: String): Boolean {
-    false
+  def winsRows(letter: String): Boolean = {
+    winCells(top_row, letter) || winCells(middle_row, letter) || winCells(bottom_row, letter)
   }
 
-  def winsCols(letter: String): Boolean {
+  def winCells(cells: Array[String], letter: String): Boolean = {
+    cells(0) == letter && cells(1) == letter && cells(2) == letter
+  }
+
+  def winsCols(letter: String): Boolean = {
     false
   }
   
-  def winsDiags(letter: String): Boolean {
+  def winsDiags(letter: String): Boolean = {
     false
   }
 }
