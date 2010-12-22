@@ -17,12 +17,13 @@ class Board(val top_row: Array[String], val middle_row: Array[String], val botto
     cells(0) == letter && cells(1) == letter && cells(2) == letter
   }
 
-  def winsCols(letter: String): Boolean = {
+  def winsCols(letter: String): Boolean = {      
     false
   }
   
   def winsDiags(letter: String): Boolean = {
-    false
+    winCells(Array(top_row(0), middle_row(1), bottom_row(2)), letter) || 
+    winCells(Array(top_row(2), middle_row(1), bottom_row(0)), letter)
   }
 }
 
