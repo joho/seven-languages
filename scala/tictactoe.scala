@@ -2,8 +2,8 @@ class Board(val top_row: Array[String], val middle_row: Array[String], val botto
   def winner(): String  = {
     if(winsRows("X") || winsCols("X") || winsDiags("X")) {
       "X"
-    } else if(winsRows("Y") || winsCols("Y") || winsDiags("Y")) {
-      "Y"
+    } else if(winsRows("O") || winsCols("O") || winsDiags("O")) {
+      "O"
     } else {
       ""
     }
@@ -18,7 +18,12 @@ class Board(val top_row: Array[String], val middle_row: Array[String], val botto
   }
 
   def winsCols(letter: String): Boolean = {      
-    false
+    var winning = false
+    for(col_number <- 0 to 2) {
+      var column = Array(top_row(col_number), middle_row(col_number), bottom_row(col_number))
+      winning = winning || winCells(column, letter)
+    }
+    winning
   }
   
   def winsDiags(letter: String): Boolean = {
@@ -26,6 +31,8 @@ class Board(val top_row: Array[String], val middle_row: Array[String], val botto
     winCells(Array(top_row(2), middle_row(1), bottom_row(0)), letter)
   }
 }
+
+// test code below
 
 val x_wins_row = new Board(Array("X", "X", "X"),
                            Array("O", "O", "" ),
