@@ -1,5 +1,5 @@
--export(translate).
--module([loop/0]).
+-module(translate).
+-export([loop/0]).
 
 loop() ->
   receive
@@ -12,7 +12,8 @@ loop() ->
       loop();
 
     _ ->
-      io:format("I don't understant.~n"),
-      loop();
+      io:format("I don't understand.~n"),
+      loop()
+
 end.
 
